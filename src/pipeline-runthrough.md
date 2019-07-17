@@ -16,7 +16,7 @@ This run-through will show go through the steps of the genomic pipeline (from CB
 ### Initial Files
 
 - [__Reference Genome GRCh38.p13__](https://www.ncbi.nlm.nih.gov/assembly/?term=GRCh38)
-
+12121
 - __Run Data__
   - Access the [BaseSpace public data sets](https://basespace.illumina.com/datacentral)
   - Search _NovaSeq 6000 SP: TruSeq PCR-Free 450 (2 replicates of NA12878)_
