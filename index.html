@@ -1,1 +1,92 @@
-<h1>Test</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Discovery Genomics</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="Description">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css">
+  <link href="https://use.fontawesome.com/releases/v5.9.0/css/all.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,500,500i,600,600i,700,700i&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+  <style type="text/css">
+    body {
+      font-family: 'Raleway', sans-serif;
+    }
+    .cover {
+      background-image: url("/assets/images/joel-filipe-_AjqGGafofE-unsplash.jpg") !important;
+      background-color: #00000077 !important;
+      background-size: cover !important;
+      color: white;
+      background-blend-mode: overlay;
+    }
+    .cover .anchor span {
+      color: white;
+    }
+    .mermaid * {
+      font-family: 'Roboto', monospace !important;
+      width: 100%;
+      text-align: center;
+    }
+    a[href^="http"]:after {
+      font-family: "Font Awesome 5 Free";
+      content: "\f35d";
+      font-size: 0.6em;
+      margin-left: 0.4em;
+      color: #2c3e50;
+      vertical-align: top;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    var num = 0;
+    window.$docsify = {
+      name: document.title,
+      loadSidebar: true,
+      // loadNavbar: true,
+      mergeNavbar: true,
+      coverpage: true,
+      alias: {
+        '/.*/_navbar.md': '/_navbar.md',
+        '/.*/_sidebar.md': '/_sidebar.md'
+      },
+      maxLevel: 4,
+      subMaxLevel: 2,
+      search: {
+        noData: {
+          '/': 'No results!'
+        },
+        paths: 'auto',
+        placeholder: {
+          '/': 'Search'
+        }
+      },
+      themeColor: '#0082be',
+      markdown: {
+        renderer: {
+          code: function(code, lang) {
+            if (lang === "mermaid") {
+              return (
+                '<div class="mermaid">' + mermaid.render('mermaid-svg-' + num++, code) + "</div>"
+              );
+            }
+            return this.origin.code.apply(this, arguments);
+          }
+        }
+      }
+    }
+  </script>
+  <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/external-script.min.js"></script>
+  <script src="//unpkg.com/docsify-copy-code"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/search.min.js"></script>
+  <script src="//unpkg.com/docsify-plugin-flexible-alerts"></script>
+  <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script> -->
+  <!-- <script src="//unpkg.com/docsify-pdf-embed-plugin/src/docsify-pdf-embed.js"></script> -->
+  <script src="//cdnjs.cloudflare.com/ajax/libs/mermaid/8.1.0/mermaid.min.js">var num = 0;mermaid.initialize({ startOnLoad: false });</script>
+</body>
+</html>

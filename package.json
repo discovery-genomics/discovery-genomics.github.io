@@ -1,0 +1,17 @@
+{
+  "name": "discovery-genomics.github.io",
+  "version": "0.1.0",
+  "main": "index.js",
+  "repository": "git@github.com:discovery-genomics/discovery-genomics.github.io.git",
+  "author": "Ayrton Sparling",
+  "license": "Unlicensed",
+  "private": true,
+  "dependencies": {},
+  "scripts": {
+    "init": "docsify init ./",
+    "watch": "docsify serve ./"
+  },
+  "devDependencies": {
+    "docsify-cli": "^4.3.0"
+  }
+}
