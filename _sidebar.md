@@ -3,6 +3,7 @@
   - [Glossary](src/glossary.md)
   - [FAQ](src/faq.md)
   - [Pipeline](src/pipeline.md)
+    - [Run-through](src/pipeline-runthrough.md)
 
 - [Whole Genome Sequencing](src/wgs/overview.md)
   - [Quality Control](src/wgs/quality-control.md)
