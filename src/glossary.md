@@ -21,6 +21,8 @@
 
 **VCF:** Variant Call Format. Contains the reads that differ from the reference genome.
 
+**VCF.GZ.TBI:** Index file of vcf.gz
+
 [**GVCF:**](https://gatkforums.broadinstitute.org/gatk/discussion/4017/what-is-a-gvcf-and-how-is-it-different-from-a-regular-vcf) VCF with extra information.
 
 **FNA:** FastA format file containing Nucleotide sequence (DNA)
