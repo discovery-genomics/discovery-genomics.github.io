@@ -109,11 +109,39 @@ ___Sample 1___
 ```
 time java -jar picard/picard.jar ValidateSamFile I= NA12878_S1.bam O= validateS1.txt MODE= SUMMARY  
 ```
+___Time___
+```
+4901.64s user 135.30s system 107% cpu 1:18:20.62 total                                                              
 
+```
 ___Sample 2___
 ```
 time java -jar picard/picard.jar ValidateSamFile I= NA12878_S2.bam O= validateS2.txt MODE= SUMMARY  
 ```
+___Time___
+```
+4017.64s user 106.92s system 106% cpu 1:04:24.77 total
+
+```
+___validateS1.txt___
+```
+## HISTOGRAM    java.lang.String
+Error Type      Count
+ERROR:MISSING_READ_GROUP        1
+WARNING:RECORD_MISSING_READ_GROUP       1061942667
+```
+___validateS2.txt___
+```
+## HISTOGRAM    java.lang.String
+Error Type      Count
+ERROR:MISSING_READ_GROUP        1
+WARNING:RECORD_MISSING_READ_GROUP       856982169
+```
+We see that both are missing the Read Group field in the header. We can also see that all records are missing a read group.
+
+The next step is to use Picard AddOrReplaceReadGroups. gatk requires several read group fields and will fail if they are missing.
+
+
 
 ### Sorting and Marking Duplicates
 
