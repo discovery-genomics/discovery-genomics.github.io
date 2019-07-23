@@ -12,3 +12,6 @@ A brief overview of the WGS (Whole Genome Sequence) production and analysis proc
 7. __Processed BAM__ is then checked for variants using one of several variant calling tools to produce a __VCF__.
 8. (If not already recalibrated) The __VCF__ is recalibrated to produce more accurate quality scores.
 9. The VCF is ready to be annotated.
+
+
+10. [Hi I'm Jack](https://www.linkedin.com/in/jackpickard831/)
