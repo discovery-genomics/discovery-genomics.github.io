@@ -14,3 +14,5 @@
 
 - Pharmacogenetics
   - [Quality Control](src/pgx/quality-control.md)
+
+- [Jack's Questions](src/jack's-questions.md)
