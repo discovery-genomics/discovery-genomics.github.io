@@ -2,6 +2,10 @@
 
 This run-through will show go through the steps of the genomic pipeline (from CBCLs to VCF) using non-DRAGEN tools.
 
+__Informative Links (Need to put somewhere else)__
+
+[Cornell Variant Calling Slides](https://biohpc.cornell.edu/lab/doc/Variant_workshop_Part1.pdf)
+
 ### Computer Specs
 
 | | |
@@ -141,7 +145,25 @@ We see that both are missing the Read Group field in the header. We can also see
 
 The next step is to use Picard AddOrReplaceReadGroups. gatk requires several read group fields and will fail if they are missing.
 
+### Adding Read Groups
 
+Read groups can be added with Picard AddOrReplaceReadGroups. I added the necessary read group fields that are required by gatk. The values of things like flowcell barcode, lane numbers, sample barcode, DNA library identifiers should be noted during the experiment. This information can be found in the run data under a file called RunParameters.xml and RunInfo.xml.
+
+ID = H5HVMDRXX.1
+PU = H5HVMDRXX.1.NA12878
+SM = NA12878
+PL = ILLUMINA
+LB = NV0038306-LIB
+
+___Sample 1___
+```
+java -jar picard/picard.jar AddOrReplaceReadGroups I= NA12878_S1.bam O= NA12878_S1_rg.bam RGID= H5HVMDRXX.1 RGPU= H5HVMDRXX.1.NA12878 RGSM= NA12878 RGPL= ILLUMINA RGLB= NV0038306-LIB
+```
+
+___Sample 2___
+```
+java -jar picard/picard.jar AddOrReplaceReadGroups I= NA12878_S2.bam O= NA12878_S2_rg.bam RGID= H5HVMDRXX.2 RGPU= H5HVMDRXX.2.NA12878 RGSM= NA12878 RGPL= ILLUMINA RGLB= NV0038306-LIB
+```
 
 ### Sorting and Marking Duplicates
 

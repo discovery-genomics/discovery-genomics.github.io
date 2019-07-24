@@ -57,7 +57,7 @@ Here some example:
 
 __GATK Required Read Groups__
 - __ID: Read Group Identifier__ Identifier that assigns reads to a read group. Each read group's ID must be unique. @RG is in the header, which defines the read group. Each read record will have a RG:Z tag that references the read group ID it belongs to. Illumina read group IDs are in the following format. flowcell + lane name and number.
-- __PU: Platform Unit__
-- __SM: Sample__
-- __PL: Platform Sequencing Technology__
-- __LB: DNA Prep Library Identifier__
+- __PU: Platform Unit__ Holds 3 types of information, {FLOWCELL_BARCODE}.{LANE}.{SAMPLE_BARCODE}. FLOWCELL_BARCODE is the unique id for a flow cell. LANE means which lane within that flowcell. SAMPLE_BARCODE is the sample/library identifier. PU is not required by GATK, but takes precedence over ID for base recalibration.
+- __SM: Sample__ Name of the sample in this read group. All read groups with the same SM value are considered as sequencing data from the same sample. If sequencing a pool of samples, use the name of the pool. If multiplexing, keep the SM tag as each sample name. The difference between pooling and multiplexing is that pooling is for samples that are not barcoded.
+- __PL: Platform Sequencing Technology__ What sequencing technology was used. Valid values are: ILLUMINA, SOLID, LS454, HELICOS, PACBIO.
+- __LB: DNA Prep Library Identifier__ What DNA library did you use.
