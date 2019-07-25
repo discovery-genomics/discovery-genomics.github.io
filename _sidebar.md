@@ -7,6 +7,7 @@
 
 - [Whole Genome Sequencing](src/wgs/overview.md)
   - [Equipment](src/wgs/wgs_equipment.md)
+  - [Implementations](src/wgs/implementations.md)
   - [Quality Control](src/wgs/quality-control.md)
 
 - Whole Exome Sequencing
