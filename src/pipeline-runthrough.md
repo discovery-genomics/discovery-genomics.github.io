@@ -203,18 +203,22 @@ Sorting and marking duplicates are done with Picard SortSam + Picard MarkDuplica
 
 I kept running into an error that said "No space left on disk". The problem is that GATK MarkDuplicatesSpark uses the /tmp folder, when it runs out of memory and spills to disk. A fix is to create my own tmp in my working directory, where I had enough space, then set that as my tmp folder.
 
-Now I have an error "There is insufficient memory for the Java RunTime Environment to continue". This happens because I am running both samples in parallel. As both commands run, they slowly eat up the RAM, until there is none left. Then one of them errors out due to insufficient memory, freeing up RAM, and the other continues to run. I also have a feeling that there is a memory leak. Before I ran this, the RAM was sitting at ~60 GB from a previous program. Not sure which one.
+Now I have an error "There is insufficient memory for the Java RunTime Environment to continue". This happens because I am running both samples in parallel. As both commands run, they slowly eat up the RAM, until there is none left. Then one of them errors out due to insufficient memory, freeing up RAM, and the other continues to run. I also have a feeling that there is a memory leak. Before I ran this, the RAM was sitting at ~60 GB from a previous program. Not sure which one. Ayrton says this is cached because of the filesystem.
+
+Since GATK runs on Java, I am now running the program with a limit of 20 GB on the Java heap. Hopefully this will not overflow the RAM.
+
+Sample 2 ran for ~16 hours, then error'd out. ![Sample 2 Error](/assets/images/sample2error.JPG "error")
 
 ___Sample 1___
 ```
-time sudo gatk MarkDuplicatesSpark -I NA12878_S1_rg.bam -O NA12878_S1_rg_mdup_sort.bam --conf 'spark.executor.cores=12' --conf 'spark.local.dir=/mnt/genomics/tmp'
+time sudo gatk MarkDuplicatesSpark --java-options "-Xmx20G" -I NA12878_S1_rg.bam -O NA12878_S1_rg_mdup_sort.bam --conf 'spark.executor.cores=12' --conf 'spark.local.dir=/mnt/genomics/tmp'
 ```
 ___Time___
 ``
 
 ___Sample 2___
 ```
-time sudo gatk MarkDuplicatesSpark -I NA12878_S2_rg.bam -O NA12878_S2_rg_mdup_sort.bam --conf 'spark.executor.cores=12' --conf 'spark.local.dir=/mnt/genomics/tmp'
+time sudo gatk MarkDuplicatesSpark --java-options "-Xmx20G" -I NA12878_S2_rg.bam -O NA12878_S2_rg_mdup_sort.bam --conf 'spark.executor.cores=12' --conf 'spark.local.dir=/mnt/genomics/tmp'
 ```
 ___Time___
 ``
