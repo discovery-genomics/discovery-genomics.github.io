@@ -207,7 +207,7 @@ Now I have an error "There is insufficient memory for the Java RunTime Environme
 
 Since GATK runs on Java, I am now running the program with a limit of 20 GB on the Java heap. Hopefully this will not overflow the RAM.
 
-Sample 2 ran for ~16 hours, then error'd out. ![Sample 2 Error](/assets/images/sample2error.JPG "error")
+Sample 2 ran for ~16 hours, then error'd out. ![Sample 2 Error](../assets/images/sample2error.JPG "error")
 
 ___Sample 1___
 ```
