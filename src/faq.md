@@ -43,3 +43,21 @@ References
 
 ## Should I use GRCh38 or GRCh38p13?
 Use GRCh38p13, the p13 means it is the 13th patched version of GRCh38. Therefore it is a more up to date/accurate version.
+
+## What are read groups?
+A [read group](https://software.broadinstitute.org/gatk/documentation/article.php?id=6472) is defined as a set of reads that a sequencer generates in a single run. A read group is effectively treated like a separate run of the instrument in downstream analysis, such as in BQSR, where same read groups are expected to share the same error model.
+
+Here some example:
+
+1. 1 sample that is run on a single lane of a flow cell. All the reads from that lane are part of the same read group. 1 SAM file, with 1 @RG in the header that specifies the read group. All the read records in this file are part of that read group.
+
+2. 4 samples. 1 dad, 1 mom, 1 son, 1 daughter. Each is ran on the same flowcell, but different lanes. Dad on lane1, mom on lane2, etc... This means I will have 4 different SAM files with the corresponding read group in the header.
+
+3. 1 sample, however it is prepped with two different DNA libraries. One with 400 bp inserts and one with 200 bp inserts. Each library is run on two lanes. In this situation, there would be 4 SAM files with different read groups. 400 bp lane 1, 400 bp lane 2, 200 bp lane 3, 200 bp lane 4.
+
+__GATK Required Read Groups__
+- __ID: Read Group Identifier__ Identifier that assigns reads to a read group. Each read group's ID must be unique. @RG is in the header, which defines the read group. Each read record will have a RG:Z tag that references the read group ID it belongs to. Illumina read group IDs are in the following format. flowcell + lane name and number.
+- __PU: Platform Unit__ Holds 3 types of information, {FLOWCELL_BARCODE}.{LANE}.{SAMPLE_BARCODE}. FLOWCELL_BARCODE is the unique id for a flow cell. LANE means which lane within that flowcell. SAMPLE_BARCODE is the sample/library identifier. PU is not required by GATK, but takes precedence over ID for base recalibration.
+- __SM: Sample__ Name of the sample in this read group. All read groups with the same SM value are considered as sequencing data from the same sample. If sequencing a pool of samples, use the name of the pool. If multiplexing, keep the SM tag as each sample name. The difference between pooling and multiplexing is that pooling is for samples that are not barcoded.
+- __PL: Platform Sequencing Technology__ What sequencing technology was used. Valid values are: ILLUMINA, SOLID, LS454, HELICOS, PACBIO.
+- __LB: DNA Prep Library Identifier__ What DNA library did you use.

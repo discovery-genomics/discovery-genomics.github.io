@@ -21,6 +21,8 @@
 
 **VCF:** Variant Call Format. Contains the reads that differ from the reference genome.
 
+**VCF.GZ.TBI:** Index file of vcf.gz
+
 [**GVCF:**](https://gatkforums.broadinstitute.org/gatk/discussion/4017/what-is-a-gvcf-and-how-is-it-different-from-a-regular-vcf) VCF with extra information.
 
 **FNA:** FastA format file containing Nucleotide sequence (DNA)
@@ -66,3 +68,24 @@ sort
 index
 
 deduplicate/mark duplicate
+
+## Run Data Files and Directories
+
+```
+basespace_NA12878
+├── Config
+├── Data
+├── InterOp
+├── NovaSeq 6000 SP: TruSeq PCR-Free 450 (2 replicates of NA12878)_166552386.json
+├── Recipe
+├── RTA3.cfg
+├── RTAComplete.txt
+├── RunInfo.xml
+├── RunParameters.xml
+├── SampleSheet.csv
+└── SequenceComplete.txt
+```
+
+cbcl files are in ```Data/Intensities/BaseCalls```
+
+```SampleSheet.csv``` contains information about samples, library chemistry, adapter trimming sequences, and other information about the run. ```bcl2fastq``` refers to this file to demultiplex BCL to FASTQ. For most runs, a sample sheet is optional. If no sample sheet is provided, all reads are written to a FASTQ file named similar to ```Undertermined_S0```, which is the default sample for reads that are not assignable a sample (ex: poor quality, wrong indexes in sample sheet, sequencing error).

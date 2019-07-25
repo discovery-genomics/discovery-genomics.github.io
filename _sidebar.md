@@ -3,8 +3,10 @@
   - [Glossary](src/glossary.md)
   - [FAQ](src/faq.md)
   - [Pipeline](src/pipeline.md)
+    - [Run-through](src/pipeline-runthrough.md)
 
 - [Whole Genome Sequencing](src/wgs/overview.md)
+  - [Equipment](src/wgs/wgs_equipment.md)
   - [Quality Control](src/wgs/quality-control.md)
 
 - Whole Exome Sequencing
@@ -12,3 +14,5 @@
 
 - Pharmacogenetics
   - [Quality Control](src/pgx/quality-control.md)
+
+- [Jack's Questions](src/jack's-questions.md)
