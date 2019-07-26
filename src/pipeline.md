@@ -3,5 +3,6 @@
 > [!WARNING]
 > This pipeline is not always up to date.
 
-__Changes to be made__
-- take out cutadapt. bcl2fastq trims for us.
+> [!DANGER]
+> __Changes to be made__
+> - take out cutadapt. bcl2fastq trims for us.
