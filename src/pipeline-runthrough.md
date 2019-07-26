@@ -235,21 +235,24 @@ time sudo gatk MarkDuplicatesSpark --java-options "-Xmx20G" -I NA12878_S2_rg.bam
 ### Sorting
 __Sorting__
 
-  ___Sample 1___
-  ```  
-  java -jar picard/picard.jar SortSam I= NA12878_S1_rg.bam O=NA12878_S1_rg_sort.bam Sort_Order=coordinate TMP_DIR= /mnt/genomics/tmp
+___Sample 1___
+```  
+java -jar picard/picard.jar SortSam I= NA12878_S1_rg.bam O=NA12878_S1_rg_sort.bam Sort_Order=coordinate TMP_DIR= /mnt/genomics/tmp
 
-  ```
-  ___Time Output___
-  ``
+```
+___Time Output___
+`24556.04s user 1246.04s system 75% cpu 9:26:20.37 total`
 
-  ___Sample 2___
-  ```
-  java -jar picard/picard.jar SortSam I= NA12878_S2_rg.bam O=NA12878_S2_rg_sort.bam Sort_Order=coordinate TMP_DIR= /mnt/genomics/tmp
-  ```
+___Sample 2___
+```
+java -jar picard/picard.jar SortSam I= NA12878_S2_rg.bam O=NA12878_S2_rg_sort.bam Sort_Order=coordinate TMP_DIR= /mnt/genomics/tmp
+```
 
-  ___Time Output___
-  ``
+___Time Output___
+`20544.86s user 1068.26s system 69% cpu 8:40:53.24 total`
 
+NA12878_S1_rg_sort.bam = 56 GB
+
+NA12878_S2_rg_sort.bam = 46 GB
 
 ### Mark Duplicates
