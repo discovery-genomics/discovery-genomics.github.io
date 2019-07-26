@@ -214,7 +214,7 @@ Since GATK runs on Java, I am now running the program with a limit of 20 GB on t
 
 Sample 2 ran for ~16 hours, then error'd out. Might be firewall issue?
 
-![Sample 2 Error](/assets/images/sample2error.jpg "Sample 2 Error")
+![Sample 2 Error](../assets/images/sample2error.jpg "Sample 2 Error")
 
 Sample 1 ran for ~18 hours and stopped with error "Exception in thread "main" java.lang.OutOfMemoryError: Java heap space"
 
