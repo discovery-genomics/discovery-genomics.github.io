@@ -197,6 +197,11 @@ Note:
 
 `bwa mem` has the option of adding read groups while aligning. This is done with the flag `-R`. In retrospect, read groups should be added while aligning. However, if forgotten, it can be added later with Picard AddOrReplaceReadGroups.
 
+
+
+
+
+
 ### Sorting and Marking Duplicates
 
 Sorting and marking duplicates are done with Picard SortSam + Picard MarkDuplicates. Both these tools are single threaded tools and cannot take advantage of multiple cores. GATK MarkDuplicatesSpark is a multi-threaded implementation of SortSam + MarkDuplicates. GATK MarkDuplicatesSpark will flag duplicates, then automatically sort the records is coordinate order.
@@ -207,52 +212,44 @@ Now I have an error "There is insufficient memory for the Java RunTime Environme
 
 Since GATK runs on Java, I am now running the program with a limit of 20 GB on the Java heap. Hopefully this will not overflow the RAM.
 
-Sample 2 ran for ~16 hours, then error'd out. ![Sample 2 Error](../assets/images/sample2error.JPG "error")
+Sample 2 ran for ~16 hours, then error'd out. Might be firewall issue?
+
+![Sample 2 Error](../assets/images/sample2error.jpg "Sample 2 Error")
+
+Sample 1 ran for ~18 hours and stopped with error "Exception in thread "main" java.lang.OutOfMemoryError: Java heap space"
+
+I am now giving up on MarkDuplicatesSpark and going to the alternative, Picard SortSam + MarkDuplicates
 
 ___Sample 1___
 ```
 time sudo gatk MarkDuplicatesSpark --java-options "-Xmx20G" -I NA12878_S1_rg.bam -O NA12878_S1_rg_mdup_sort.bam --conf 'spark.executor.cores=12' --conf 'spark.local.dir=/mnt/genomics/tmp'
 ```
-___Time___
-``
-
 ___Sample 2___
 ```
 time sudo gatk MarkDuplicatesSpark --java-options "-Xmx20G" -I NA12878_S2_rg.bam -O NA12878_S2_rg_mdup_sort.bam --conf 'spark.executor.cores=12' --conf 'spark.local.dir=/mnt/genomics/tmp'
 ```
-___Time___
-``
 
 
 
 
-### whatever
+### Sorting
 __Sorting__
 
   ___Sample 1___
   ```  
-  java -jar picard/picard.jar SortSam I= NA12878_S1.bam O=sorted_NA12878_S1.bam Sort_Order=coordinate TMP_DIR= /mnt/genomics/tmp
+  java -jar picard/picard.jar SortSam I= NA12878_S1_rg.bam O=NA12878_S1_rg_sort.bam Sort_Order=coordinate TMP_DIR= /mnt/genomics/tmp
 
   ```
   ___Time Output___
-  ```
-  26105.09s user 1021.51s system 87% cpu 8:34:53.39 total  
-  ```
+  ``
 
   ___Sample 2___
   ```
-  java -jar picard/picard.jar SortSam I= NA12878_S2.bam O=sorted_NA12878_S2.bam Sort_Order=coordinate TMP_DIR= /mnt/genomics/tmp
+  java -jar picard/picard.jar SortSam I= NA12878_S2_rg.bam O=NA12878_S2_rg_sort.bam Sort_Order=coordinate TMP_DIR= /mnt/genomics/tmp
   ```
 
   ___Time Output___
-  ```
-  20724.18s user 078.26s system 87% cpu 7:12:63.32 total  
-  ```
+  ``
 
-  Created 2 sorted bam files.
 
-  sorted_NA12878_S1 = 55 GB
-
-  sorted_NA12878_S2 = 46 GB
-
-__Mark Duplicates__
+### Mark Duplicates
