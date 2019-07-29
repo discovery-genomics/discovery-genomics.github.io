@@ -233,6 +233,9 @@ time sudo gatk MarkDuplicatesSpark --java-options "-Xmx20G" -I NA12878_S2_rg.bam
 
 
 ### Sorting
+
+Sorting by coordinate order.
+
 __Sorting__
 
 ___Sample 1___
@@ -256,3 +259,23 @@ NA12878_S1_rg_sort.bam = 56 GB
 NA12878_S2_rg_sort.bam = 46 GB
 
 ### Mark Duplicates
+
+MarkDuplicates behaves differently depending on how the input data is sorted. If the input is coordinate-sorted, unmapped mates of mapped records and secondary alignments are not marked as duplicates. If input is query-sorted, unmapped mates and secondary reads are marked as duplicates.
+
+Ran in parallel. Sample 2 ran out of memory, but sample 1 kept on going. I let sample 1 finish, then run sample 2 again.
+
+___Sample 1___
+```  
+java -jar picard/picard.jar MarkDuplicates I= NA12878_S1_rg_sort.bam O=NA12878_S1_rg_sort_md.bam M= S1_md_metrics.txt TMP_DIR= /mnt/genomics/tmp
+
+```
+___Time Output___
+`160483.74s user 1957.67s system 773% cpu 5:50:09.21 total`
+
+___Sample 2___
+```
+java -jar picard/picard.jar MarkDuplicates I= NA12878_S2_rg_sort.bam O=NA12878_S2_rg_sort_md.bam M= S2_md_metrics.txt TMP_DIR= /mnt/genomics/tmp
+```
+
+___Time Output___
+``
