@@ -25,6 +25,4 @@ __Networking__
 __Other Notes__
 - Illumina Proactive monitoring services is on by default.
 
-[Documentation](https://support.illumina.com/sequencing/sequencing_instruments/novaseq-6000.html)
-[Literature](https://www.illumina.com/systems/sequencing-platforms/novaseq/resources.html)
--
+[Documentation](https://support.illumina.com/sequencing/sequencing_instruments/novaseq-6000/documentation.html)

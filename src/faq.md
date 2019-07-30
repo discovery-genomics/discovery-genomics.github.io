@@ -5,7 +5,7 @@ If pair-ended, there should be 2 files.
 The first line represents an id of the read. Information to detect pair-end is at the end of this id. Sequence identifiers format vary by organization. Here is an example of a pair of reads with Illumina sequence identifiers v1.4 and above.
 
 **FT-SA14287_S90_L004_R1_001.fastq**
-Notice the 1 near the end of the first line. **1**:N:0:GCCAATAT
+Notice the 1 near the end of the first line. __1__:N:0:GCCAATAT
 ```
 @A00284:43:HC5TNDSXX:4:1101:1018:1000 1:N:0:GCCAATAT
 NTGAAAAGGCAGAATGTATAGTGTTGGTCCTTTGATGGAATTTCTGAGAAAAAACAAACTATTCCAGATGATGACTAAATCACATAGTTTTAAATCTTCTGTAGATTTTTAATGGTTTTTTTTCAAAAACGCATATTGTTCAATATAATAA
@@ -14,7 +14,7 @@ NTGAAAAGGCAGAATGTATAGTGTTGGTCCTTTGATGGAATTTCTGAGAAAAAACAAACTATTCCAGATGATGACTAAAT
 ```
 
   **FT-SA14287_S90_L004_R2_001.fastq**
-  Notice the 2 near the end of the first line. **2**:N:0:GCCAATAT
+  Notice the 2 near the end of the first line. __2__:N:0:GCCAATAT
   ```
   @A00284:43:HC5TNDSXX:4:1101:1018:1000 2:N:0:GCCAATAT
 TATAAATAAACTTTCTGAAATTTTGTGGTTCAAAAGGATGAATGGTGGGGATTATCATAATCTTAAATTTCTACAAAACTCTAGCAAAGATACTAACTGGTGTGATTTTTTTCTTTTTTGTATCATACTGCACATTTGTGAATCCACCAAG

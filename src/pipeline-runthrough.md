@@ -8,6 +8,8 @@ __Informative Links (Need to put somewhere else)__
 
 [Cornell Variant Calling Slides Part 2](https://biohpc.cornell.edu/lab/doc/Variant_workshop_Part2.pdf)
 
+[GATK Resource Bundle](https://github.com/bahlolab/bioinfotools/blob/master/GATK/resource_bundle.md)
+
 ### Computer Specs
 
 | | |
@@ -278,4 +280,28 @@ java -jar picard/picard.jar MarkDuplicates I= NA12878_S2_rg_sort.bam O=NA12878_S
 ```
 
 ___Time Output___
-``
+`136383.69s user 1349.75s system 812% cpu 4:42:31.43 total`
+
+NA12878_S1_rg_sort_md.bam = 57 GB
+
+NA12878_S2_rg_sort_md.bam = 47 GB
+
+Two metrics files `S1_md_metrics.txt` and `S2_md_metrics.txt` are created that show statistics on the marked duplicates.
+
+note: files are ~1GB larger because MarkDuplicates simply marks the duplicate line and does not delete it.
+
+
+### Base Quality Score Recalibration (BQSR)
+The quality scores for the bases in the BAM file can have systematic errors. These errors can arise because of the chemistry of the sequencing reaction or flaws in equipment. [Base Quality Score Recalibration](https://software.broadinstitute.org/gatk/documentation/article?id=11081), is a way to adjust for these errors by applying a machine learning model on covariates. Example of covariates are sequence context, read position, cycle.
+
+There are 2 steps to BQSR
+1. [BaseRecalibrator](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_hellbender_tools_walkers_bqsr_BaseRecalibrator.php) builds the model by taking the BAM file and sets of known variants. The output is a recalibration file.
+2.  [ApplyBQSR](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_hellbender_tools_walkers_bqsr_ApplyBQSR.php) applies the model by adjusting the base quality scores against the recalibration file. The output is a new recalibrated BAM.
+
+I downloaded `dbsnp_146.hg38.vcf.gz` and `dbsnp_146.hg38.vcf.gz.tbi` (index file) as the set of known variants.
+
+___Sample 1___
+```
+time sudo gatk BaseRecalibrator -I NA12878_S1_rg_sort_md.bam -R GCF_000001405.39_GRCh38.p13_genomic.fna --known-sites dbsnp_146.hg38.vcf.gz -O S1_recal.table
+
+```
