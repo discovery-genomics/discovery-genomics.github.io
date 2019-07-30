@@ -38,6 +38,27 @@
       color: #2c3e50;
       vertical-align: top;
     }
+    .alert.callout.example {
+      border-left-color: #7A57BF
+    }
+    .alert.callout.example .title {
+      color: #7A57BF
+    }
+    .file-code {
+      position: relative
+    }
+    .file-code:after {
+      position: absolute;
+      content: attr(data-filename);
+      font-family: Roboto Mono,Monaco,courier,monospace;
+      /* opacity: 0.6; */
+      width: 100%;
+      box-sizing: border-box;
+      border-bottom: 1px solid lightgrey;
+      top: 0;
+      left: 0;
+      padding: 0.4em calc(1.4rem + 5px);
+    }
   </style>
 </head>
 <body>
@@ -67,9 +88,27 @@
         }
       },
       themeColor: '#0082be',
+      pagination: {
+        crossChapter: true
+      },
+      'flexible-alerts': {
+        example: {
+          icon: "fa fa-search",
+          label: 'Example',
+          className: "example"
+        },
+      },
       markdown: {
         renderer: {
           code: function(code, lang) {
+              var fileNameIdxStart = code.indexOf('fileStart:');
+              var fileNameIdxEnd = code.indexOf(':fileEnd');
+              if (~fileNameIdxStart && ~fileNameIdxEnd) {
+                var fileName = code.substring(fileNameIdxStart + 10, fileNameIdxEnd);
+                code = code.replace('fileStart:' + fileName + ":fileEnd", "");
+                var output = this.origin.code.apply(this, [code, lang]);
+                return "<div class=\"file-code\" data-filename=\""+fileName+"\">" + output + "</div>";
+              }
             if (lang === "mermaid") {
               return (
                 '<div class="mermaid">' + mermaid.render('mermaid-svg-' + num++, code) + "</div>"
@@ -86,6 +125,7 @@
   <script src="//unpkg.com/docsify-copy-code"></script>
   <script src="//unpkg.com/docsify/lib/plugins/search.min.js"></script>
   <script src="//unpkg.com/docsify-plugin-flexible-alerts"></script>
+  <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
   <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/pdfobject/2.1.1/pdfobject.min.js"></script> -->
   <!-- <script src="//unpkg.com/docsify-pdf-embed-plugin/src/docsify-pdf-embed.js"></script> -->
   <script src="//cdnjs.cloudflare.com/ajax/libs/mermaid/8.1.0/mermaid.min.js">var num = 0;mermaid.initialize({ startOnLoad: false });</script>

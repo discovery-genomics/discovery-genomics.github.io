@@ -15,3 +15,6 @@ __Adding Hints__
 
 > [!DANGER]
 > This is a danger.
+
+> [!Example]
+> This is an example.

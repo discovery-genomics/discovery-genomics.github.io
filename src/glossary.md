@@ -36,6 +36,40 @@
 **GPFF:** Genbank Protein file containing protein sequence and annotation
 
 **\*.gz:** Compressed file. Some tools can work off of compressed files and output compressed files.
+
+## Reference Genome Sources
+**HG:** UCSC format genome file. Uses chr followed by chromosome number (e.g. `chr1`) to reference chromosome index.
+> [!Example]
+> ```
+fileStart:hg38.fa:fileEnd
+chr1
+NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+...
+TAGTAGAATGAATCATTAAGCAGccaaacagccactatatattacacact
+gtattaggtgctgaagatataaaagtgaacaaactcactactgctgtcaa
+> ```
+
+**GRCH:** Genome Reference Consortium format genome file. Uses NC_000006.12 followed by chromosome number (e.g. `chr1`) to reference chromosome index.
+> [!Example]
+> ```
+fileStart:GCF_000001405.39_GRCh38.p13_genomic.fna:fileEnd
+> NC_000001.11 Homo sapiens chromosome 1, GRCh38.p13 Primary Assembly
+> NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+> ...
+> agatggcaccactgcactccatcctgggcgacagagcaagactccgtctcaaaagaaaaaaagaaaaaccattacaTTTG
+> GGAGAAGCAATTTGTGGTGTTTTACATCTCTGTGGTGTAAGTCCAAAGTGTccagacatttaaaaagtaagtgGCTTTCA
+> ```
+
+## Reference Genome Sequences
+**RefSeq:** RefSeq genomes are copies of selected assembled genomes available in GenBank. Uses distinct accession number format  (e.g. `NC_000001.11` or `NP_000001.11`).
+
+- non-redundancy
+- explicitly linked nucleotide and protein sequences
+- updates to reflect current knowledge of sequence data and biology
+- data validation and format consistency
+- distinct accession series (all accessions include an underscore '\_' character)
+- ongoing curation by NCBI staff and collaborators, with reviewed records indicated
+
 ## Data Conversion Tools
 [**bcl2fastq**](https://support.illumina.com/content/dam/illumina-support/documents/documentation/software_documentation/bcl2fastq/bcl2fastq2-v2-20-software-guide-15051736-03.pdf)
 Illumina software that demultiplexes raw sequence data (BCL) to FASTQ.
