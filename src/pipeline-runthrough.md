@@ -298,10 +298,27 @@ There are 2 steps to BQSR
 1. [BaseRecalibrator](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_hellbender_tools_walkers_bqsr_BaseRecalibrator.php) builds the model by taking the BAM file and sets of known variants. The output is a recalibration file.
 2.  [ApplyBQSR](https://software.broadinstitute.org/gatk/documentation/tooldocs/current/org_broadinstitute_hellbender_tools_walkers_bqsr_ApplyBQSR.php) applies the model by adjusting the base quality scores against the recalibration file. The output is a new recalibrated BAM.
 
-I downloaded `dbsnp_146.hg38.vcf.gz` and `dbsnp_146.hg38.vcf.gz.tbi` (index file) as the set of known variants.
+I downloaded `dbsnp_146.hg38.vcf.gz` and `dbsnp_146.hg38.vcf.gz.tbi` (index file) as the set of known variants. Then I ran the following command.
 
 ___Sample 1___
 ```
 time sudo gatk BaseRecalibrator -I NA12878_S1_rg_sort_md.bam -R GCF_000001405.39_GRCh38.p13_genomic.fna --known-sites dbsnp_146.hg38.vcf.gz -O S1_recal.table
+```
 
+However this doesn't work because the BAM file that I have names chromosomes with RefSeq,`NC_000001.11` because my reference gene uses RefSeq notation. `dbsnp_146.hg38.vcf.gz` formatted with `chr1`, `chr2`, `chr3`, etc.
+
+I need a VCF that is similar to my reference gene. I downloaded `GRCh38_latest_dbSNP_all.vcf.gz` from the [NCBI RefSeq FTP site](ftp://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh38_latest/refseq_identifiers/). This VCF has the correct gene notation. The next step is to index this `VCF.GZ` to create a `VCF.GZ.TBI` with [GATK IndexFeatureFile](https://software.broadinstitute.org/gatk/documentation/tooldocs/4.0.3.0/org_broadinstitute_hellbender_tools_IndexFeatureFile.php)
+
+___Index Known Sites of Variation___
+```
+time sudo gatk IndexFeatureFile -F GRCh38_latest_dbSNP_all.vcf.gz
+```
+___Time___
+`1965.46s user 37.18s system 108% cpu 30:53.64 total`
+
+After the index file, `GRCh38_latest_dbSNP_all.vcf.gz.tbi`, is generated, we can then run the BaseRecalibrator.
+
+___Sample 1 BaseRecalibrator___
+```
+time sudo gatk BaseRecalibrator -I NA12878_S1_rg_sort_md.bam -R GCF_000001405.39_GRCh38.p13_genomic.fna --known-sites GRCh38_latest_dbSNP_all.vcf.gz -O S1_recal.table
 ```
