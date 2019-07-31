@@ -1,4 +1,10 @@
-## How to detect pair-ended vs non-pair-ended FASTQ
+## What is pair-ended and how to detect pair-ended vs non-pair-ended FASTQ
+
+[Pair-ended sequencing](https://www.illumina.com/science/technology/next-generation-sequencing/plan-experiments/paired-end-vs-single-read.html) is when the user sequences the front and back ends of the DNA fragment.
+
+![Paired Sequencing](../assets/images/pairedseq.jpg "Paired Sequencing")
+
+
 If pair-ended, there should be 2 files.
 	- R1.fastq
 	- R2.fastq

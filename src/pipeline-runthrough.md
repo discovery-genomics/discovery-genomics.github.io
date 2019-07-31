@@ -31,6 +31,7 @@ Note: gatk 4.1.2.0 comes with picard 2.19.0. The picard tool that is being used 
 ### Initial Files
 
 - [__Reference Genome GRCh38.p13__](https://www.ncbi.nlm.nih.gov/assembly/?term=GRCh38)
+- [__Known Variants GRCh38_latest_dbSNP_all.vcf.gz__](ftp://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh38_latest/refseq_identifiers/)
 - __Run Data__
   - Access the [BaseSpace public data sets](https://basespace.illumina.com/datacentral)
   - Search _NovaSeq 6000 SP: TruSeq PCR-Free 450 (2 replicates of NA12878)_
@@ -96,7 +97,7 @@ ___Time___
   ___Time___
   `11.41s user 1.60s system 97% cpu 13.317 total`
 
-2. Align sample 1 and sample 2 as pair-ended reads, which will create a SAM file. To save storage space, pipe the output to samtools to end up with a BAM.
+2. Align sample 1 R1 and R2 as pair-ended reads, which will create a SAM file. To save storage space, pipe the output to samtools to end up with a BAM.
 
   Ran both samples in parallel, half the threads for sample 1 and half the threads for sample 2.
 
@@ -320,5 +321,15 @@ After the index file, `GRCh38_latest_dbSNP_all.vcf.gz.tbi`, is generated, we can
 
 ___Sample 1 BaseRecalibrator___
 ```
-time sudo gatk BaseRecalibrator -I NA12878_S1_rg_sort_md.bam -R GCF_000001405.39_GRCh38.p13_genomic.fna --known-sites GRCh38_latest_dbSNP_all.vcf.gz -O S1_recal.table
+gatk BaseRecalibrator -I NA12878_S1_rg_sort_md.bam -R GCF_000001405.39_GRCh38.p13_genomic.fna --known-sites GRCh38_latest_dbSNP_all.vcf.gz -O S1_recal.table
 ```
+___Time___
+`31174.44s user 610.64s system 103% cpu 8:32:28.16 total`
+
+
+___Sample 2 BaseRecalibrator___
+```
+gatk BaseRecalibrator -I NA12878_S2_rg_sort_md.bam -R GCF_000001405.39_GRCh38.p13_genomic.fna --known-sites GRCh38_latest_dbSNP_all.vcf.gz -O S2_recal.table
+```
+___Time___
+``
