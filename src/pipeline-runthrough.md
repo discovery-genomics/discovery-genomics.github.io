@@ -332,4 +332,12 @@ ___Sample 2 BaseRecalibrator___
 gatk BaseRecalibrator -I NA12878_S2_rg_sort_md.bam -R GCF_000001405.39_GRCh38.p13_genomic.fna --known-sites GRCh38_latest_dbSNP_all.vcf.gz -O S2_recal.table
 ```
 ___Time___
-``
+`26805.21s user 780.52s system 103% cpu 7:24:58.87 total`
+
+After creating the recalibration tables are generated, they now need to be applied.
+
+___Sample 1 ApplyBQSR___
+```
+time sudo gatk ApplyBQSR -R GCF_000001405.39_GRCh38.p13_genomic.fna -I NA12878_S1_rg_sort_md.bam --bqsr-recal-file S1_recal.table -O NA128
+78_S1_rg_sort_md_recal.bam
+```

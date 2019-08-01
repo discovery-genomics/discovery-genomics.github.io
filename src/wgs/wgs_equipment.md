@@ -17,7 +17,7 @@ __Storage__
 - Compute Engine (CE) has storage and control computer has storage.
 
 __Networking__
-- Can configure output folder to be on a different network location. (need to confirm this but it's on page 19 of the Sequencing System Guide)
+- Can configure output folder to be on a different network location.
 - Illumina recommends 1 Gb connection between the sequencer and the buffer server.
 - 200 MB/s/instrument for internal network uploads.
 - 200 Mb/s/instrument for BaseSpace Sequence Hub uploads.
@@ -26,3 +26,5 @@ __Other Notes__
 - Illumina Proactive monitoring services is on by default.
 
 [Documentation](https://support.illumina.com/sequencing/sequencing_instruments/novaseq-6000/documentation.html)
+
+### Illumina DRAGEN
