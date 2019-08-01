@@ -200,6 +200,8 @@ Note:
 
 `bwa mem` has the option of adding read groups while aligning. This is done with the flag `-R`. In retrospect, read groups should be added while aligning. However, if forgotten, it can be added later with Picard AddOrReplaceReadGroups.
 
+So now that we have a proper BAM with read groups, it is still unprocessed. The next few steps are to do some preprocessing on the BAM to prepare it for variant calling. [Here](https://software.broadinstitute.org/gatk/best-practices/workflow?id=11165) is a workflow that I followed for BAM preprocessing.
+
 
 
 
@@ -317,7 +319,7 @@ time sudo gatk IndexFeatureFile -F GRCh38_latest_dbSNP_all.vcf.gz
 ___Time___
 `1965.46s user 37.18s system 108% cpu 30:53.64 total`
 
-After the index file, `GRCh38_latest_dbSNP_all.vcf.gz.tbi`, is generated, we can then run the BaseRecalibrator.
+After the index file, `GRCh38_latest_dbSNP_all.vcf.gz.tbi`, is generated, we can then run the BaseRecalibrator. Sample 1 and Sample 2 were not running in parallel.
 
 ___Sample 1 BaseRecalibrator___
 ```
@@ -338,6 +340,33 @@ After creating the recalibration tables are generated, they now need to be appli
 
 ___Sample 1 ApplyBQSR___
 ```
-time sudo gatk ApplyBQSR -R GCF_000001405.39_GRCh38.p13_genomic.fna -I NA12878_S1_rg_sort_md.bam --bqsr-recal-file S1_recal.table -O NA128
-78_S1_rg_sort_md_recal.bam
+time sudo gatk ApplyBQSR -R GCF_000001405.39_GRCh38.p13_genomic.fna -I NA12878_S1_rg_sort_md.bam --bqsr-recal-file S1_recal.table -O NA12878_S1_rg_sort_md_recal.bam
+```
+___Time___
+`24726.82s user 3447.56s system 163% cpu 4:47:55.40 total`
+
+___Sample 2 ApplyBQSR___
+```
+time sudo gatk ApplyBQSR -R GCF_000001405.39_GRCh38.p13_genomic.fna -I NA12878_S2_rg_sort_md.bam --bqsr-recal-file S2_recal.table -O NA12878_S2_rg_sort_md_recal.bam
+```
+___Time___
+`19601.50s user 2707.28s system 164% cpu 3:45:50.64 total`
+
+NA12878_S1_rg_sort_md_recal.bam = 139 GB
+
+NA12878_S2_rg_sort_md_recal.bam = 113 GB
+
+ApplyBQSR will also index and generate .bai files so there is no need to run an index after this.
+
+At this point, we are finished with preprocessing and have analysis-read BAM files. The next step is to call variants on the BAMs.
+
+### Variant Calling with HaplotypeCaller
+
+`stand-call-conf 30` sets the minimum phred score to be 30 in order for the gene to be considered for variant calling.
+
+`--native-pair-hmm-threads 40` sets the threads to 40.
+
+___Sample 1___
+```
+time sudo gatk HaplotypeCaller -R GCF_000001405.39_GRCh38.p13_genomic.fna -I NA12878_S1_rg_sort_md_recal.bam -O NA12878_S1.vcf.gz -stand-call-conf 30 --native-pair-hmm-threads 40
 ```
