@@ -25,13 +25,14 @@ __Informative Links (Need to put somewhere else)__
 - samtools 1.9
 - picard 2.20.3
 - gatk 4.1.2.0
+- bcftools
 
 Note: gatk 4.1.2.0 comes with picard 2.19.0. The picard tool that is being used in this run-through is separate from gatk.
 
 ### Initial Files
 
-- [__Reference Genome GRCh38.p13__](https://www.ncbi.nlm.nih.gov/assembly/?term=GRCh38)
-- [__Known Variants GRCh38_latest_dbSNP_all.vcf.gz__](ftp://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh38_latest/refseq_identifiers/)
+- [__Reference Genome: GRCh38.p13__](https://www.ncbi.nlm.nih.gov/assembly/?term=GRCh38)
+- [__Known Variants: GRCh38_latest_dbSNP_all.vcf.gz__](ftp://ftp.ncbi.nlm.nih.gov/refseq/H_sapiens/annotation/GRCh38_latest/refseq_identifiers/)
 - __Run Data__
   - Access the [BaseSpace public data sets](https://basespace.illumina.com/datacentral)
   - Search _NovaSeq 6000 SP: TruSeq PCR-Free 450 (2 replicates of NA12878)_
@@ -40,7 +41,7 @@ Note: gatk 4.1.2.0 comes with picard 2.19.0. The picard tool that is being used 
   - The run data should be about 94 GB
   - This data is the human genome sample NA12878, [which has high confidence variants for a human sample. It is used as a benchmark in many genomic research projects.](https://biology.stackexchange.com/questions/57811/why-should-we-use-the-na12878-dataset-for-benchmarking)
 
-### Convert the run data (CBCLs) to FASTQ
+## Convert the run data (CBCLs) to FASTQ
 `basespace_NA12878` is the directory that contains the run data.
 
 `--no-lane-splitting`
@@ -70,7 +71,7 @@ Decompress with gzip to get the FASTQ files.
 Four decompressed FASTQ files add up to 656 GB.
 Meaning 94 GB of CBCLs converted to 656 GB of FASTQs.
 
-### Map/Align FASTQ to BAM
+## Map/Align FASTQ to BAM
 
 1. Create bwa index files for the reference FASTA file.
 ```
@@ -127,7 +128,7 @@ ___Time___
 
   NA12878_S2.bam = 80 GB
 
-### Validate the BAM Files
+## Validate the BAM Files
 
 The Picard tool, [ValidateSamFile](https://software.broadinstitute.org/gatk/documentation/tooldocs/4.0.1.1/picard_sam_ValidateSamFile.php) can report errors about a SAM or BAM file. The tool runs in verbose mode, and will exit after finding 100 errors. It's much better to use the SUMMARY mode.
 
@@ -163,7 +164,7 @@ We see that both are missing the Read Group field in the header. We can also see
 
 The next step is to use Picard AddOrReplaceReadGroups. GATK requires several read group fields and will fail if they are missing.
 
-### Adding Read Groups
+## Adding Read Groups
 
 Read groups can be added with Picard [AddOrReplaceReadGroups](https://software.broadinstitute.org/gatk/documentation/tooldocs/4.0.0.0/picard_sam_AddOrReplaceReadGroups.php#--SORT_ORDER). I added the necessary read group fields that are required by GATK. The values of things like flowcell barcode, lane numbers, sample barcode, DNA library identifiers should be noted during the experiment. This information can be found in the run data under a file called RunParameters.xml and RunInfo.xml.
 
@@ -202,12 +203,7 @@ Note:
 
 So now that we have a proper BAM with read groups, it is still unprocessed. The next few steps are to do some preprocessing on the BAM to prepare it for variant calling. [Here](https://software.broadinstitute.org/gatk/best-practices/workflow?id=11165) is a workflow that I followed for BAM preprocessing.
 
-
-
-
-
-
-### Sorting and Marking Duplicates
+## Sorting and Marking Duplicates with Spark (did not work)
 
 Sorting and marking duplicates are done with Picard SortSam + Picard MarkDuplicates. Both these tools are single threaded tools and cannot take advantage of multiple cores. GATK MarkDuplicatesSpark is a multi-threaded implementation of SortSam + MarkDuplicates. GATK MarkDuplicatesSpark will flag duplicates, then automatically sort the records is coordinate order.
 
@@ -234,10 +230,7 @@ ___Sample 2___
 time sudo gatk MarkDuplicatesSpark --java-options "-Xmx20G" -I NA12878_S2_rg.bam -O NA12878_S2_rg_mdup_sort.bam --conf 'spark.executor.cores=12' --conf 'spark.local.dir=/mnt/genomics/tmp'
 ```
 
-
-
-
-### Sorting
+## Sorting
 
 Sorting by coordinate order.
 
@@ -263,7 +256,7 @@ NA12878_S1_rg_sort.bam = 56 GB
 
 NA12878_S2_rg_sort.bam = 46 GB
 
-### Mark Duplicates
+## Marking Duplicates
 
 MarkDuplicates behaves differently depending on how the input data is sorted. If the input is coordinate-sorted, unmapped mates of mapped records and secondary alignments are not marked as duplicates. If input is query-sorted, unmapped mates and secondary reads are marked as duplicates.
 
@@ -294,7 +287,7 @@ Two metrics files `S1_md_metrics.txt` and `S2_md_metrics.txt` are created that s
 note: files are ~1GB larger because MarkDuplicates simply marks the duplicate line and does not delete it.
 
 
-### Base Quality Score Recalibration (BQSR)
+## Base Quality Score Recalibration (BQSR)
 The quality scores for the bases in the BAM file can have systematic errors. These errors can arise because of the chemistry of the sequencing reaction or flaws in equipment. [Base Quality Score Recalibration](https://software.broadinstitute.org/gatk/documentation/article?id=11081), is a way to adjust for these errors by applying a machine learning model on covariates. Example of covariates are sequence context, read position, cycle.
 
 There are 2 steps to BQSR
@@ -360,7 +353,7 @@ ApplyBQSR will also index and generate .bai files so there is no need to run an 
 
 At this point, we are finished with preprocessing and have analysis-read BAM files. The next step is to call variants on the BAMs.
 
-### Variant Calling with HaplotypeCaller
+## Variant Calling with HaplotypeCaller
 
 `stand-call-conf 30` sets the minimum phred score to be 30 in order for the gene to be considered for variant calling.
 
@@ -370,3 +363,31 @@ ___Sample 1___
 ```
 time sudo gatk HaplotypeCaller -R GCF_000001405.39_GRCh38.p13_genomic.fna -I NA12878_S1_rg_sort_md_recal.bam -O NA12878_S1.vcf.gz -stand-call-conf 30 --native-pair-hmm-threads 40
 ```
+___Time___
+`687417.05s user 6248.88s system 944% cpu 20:24:22.68 total`
+
+___Sample 2___
+```
+time sudo gatk HaplotypeCaller -R GCF_000001405.39_GRCh38.p13_genomic.fna -I NA12878_S2_rg_sort_md_recal.bam -O NA12878_S2.vcf.gz -stand-call-conf 30 --native-pair-hmm-threads 40
+```
+___Time___
+`641897.55s user 6118.66s system 980% cpu 18:21:30.40 total`
+
+NA12878_S1.vcf.gz = 252 MB
+
+NA12878_S2.vcf.gz = 246 MB
+
+Also created a .tbi for each vcf.gz
+
+
+## Variant Quality Score Recalibration
+
+GATK variant calling is designed to be lenient in order to minimize the chance of missing a variant. However, this means a lot of false positives can occur. [Variant Quality Score Recalibration](https://software.broadinstitute.org/gatk/documentation/article.php?id=39) filters the variant data to reduce the number of false positives. Here are some links for more information.
+- [Which training sets should I use for VQSR?](https://software.broadinstitute.org/gatk/documentation/article.php?id=1259)
+- [How to recalibrate variant quality scores](https://software.broadinstitute.org/gatk/documentation/article.php?id=2805)
+
+There are 2 steps for VQSR
+1. [VariantRecalibrator](https://software.broadinstitute.org/gatk/documentation/tooldocs/4.0.3.0/org_broadinstitute_hellbender_tools_walkers_vqsr_VariantRecalibrator.php) Builds the model by taking in a VCF file and known true data sets. The output is a recalibration file. There will be a recalibration for SNPs as well as indels, so this will need to be ran twice, `-mode SNP` and `-mode INDEL`. This means for 1 VCF, there will be 2 recalibration files (one for SNP and one for INDEL).
+2. [ApplyRecalibration](https://software.broadinstitute.org/gatk/documentation/tooldocs/4.0.0.0/org_broadinstitute_hellbender_tools_walkers_vqsr_ApplyVQSR.php) Applies a cutoff score to filter variants against the recalibration table. Will need to be ran twice for a single VCF. One run with the SNP recalibration file from the previous step and `-mode SNP`. The output VCF will be run again with the INDEL recalibration file and `-mode INDEL`.
+
+Reference genome `GRCh38p13` is new and does not have high-quality sets of known variants to use as true and training values.
