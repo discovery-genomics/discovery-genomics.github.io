@@ -391,3 +391,8 @@ There are 2 steps for VQSR
 2. [ApplyRecalibration](https://software.broadinstitute.org/gatk/documentation/tooldocs/4.0.0.0/org_broadinstitute_hellbender_tools_walkers_vqsr_ApplyVQSR.php) Applies a cutoff score to filter variants against the recalibration table. Will need to be ran twice for a single VCF. One run with the SNP recalibration file from the previous step and `-mode SNP`. The output VCF will be run again with the INDEL recalibration file and `-mode INDEL`.
 
 Reference genome `GRCh38p13` is new and does not have high-quality sets of known variants to use as true and training values.
+
+
+## Conclusion
+
+TODO
