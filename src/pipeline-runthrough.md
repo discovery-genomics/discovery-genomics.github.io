@@ -394,5 +394,14 @@ Reference genome `GRCh38p13` is new and does not have high-quality sets of known
 
 
 ## Conclusion
+In conclusion, the biggest mistake on this run was using the reference genome `GRCh38p13`. Although it is the latest and greatest, the truth sets for this genome are not updated, which makes it hard to run BQSR and VQSR. Another difficulty is that `GRch38p13` chromosomes are annotated in RefSeq or GenBank format, rather than the `chr1`, `chr2` format.
 
-TODO
+The pipeline was extremely slow, with some commands taking up to a day to run. HaplotypeCaller took almost two days to finish. The compute can certainly be improved with GPU acceleration.
+
+Definitely need a lot of CPU
+
+Definitely need a lot of storage
+
+Definitely need a lot of RAM
+
+I hope this run gives a baseline as to the timing of the pipeline and the different parts within the pipeline.
